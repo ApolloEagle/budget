@@ -2,5 +2,39 @@
 {% block page_content %}
 <div class="col-md-8 offset-md-2">
     <h1>Budget Calculator</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table class="table" id="expenseTable">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Expenses</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ form.name }}</td>
+                    <td>
+                        <div style="float: left;">
+                            {{ form.amount }}
+                        </div>
+                        <div style="float: right;">
+                            <button>Add Expense</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <table class="table">
+        <tbody>
+            {% for expense in expenses %}
+            <tr>
+                <td>{{ expense.name }}</td>
+                <td>{{ expense.amount }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}

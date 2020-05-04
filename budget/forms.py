@@ -1,17 +1,18 @@
 from django import forms
 
 class ExpenseForm(forms.Form):
-    name = forms.CharField(widget=forms.Textarea(
-        attrs={
+    name = forms.CharField(
+        max_length=255,
+        widget=forms.TextInput(attrs={
             "class": "form-control",
-            "placeholder": "Leave a comment!"
+            "placeholder": "Expense Name"
         })
-    ),
+    )
     amount = forms.DecimalField(
         max_digits=16,
         decimal_places=2,
         widget=forms.NumberInput(attrs={
             "class": "form-control",
-            "placeholder": "$500.00"
+            "placeholder": "$400.00"
         })
     )
