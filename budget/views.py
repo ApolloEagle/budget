@@ -2,7 +2,6 @@ from django.shortcuts import render
 from budget.models import Expense
 from .forms import ExpenseForm
 from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
 from django.db.models import Sum
 
 def budget_view(request):
@@ -13,13 +12,25 @@ def budget_view(request):
     if request.method == 'POST':
         form = ExpenseForm(request.POST)
         if form.is_valid():
-            expense = Expense(
-                name=form.cleaned_data["name"],
-                amount=form.cleaned_data["amount"]
-            )
-            expense.save()
+            if 'create-expense' in request.POST:
+                expense = Expense(
+                    name=form.cleaned_data["name"],
+                    amount=form.cleaned_data["amount"]
+                )
 
-            return HttpResponseRedirect('/')
+                expense.save()
+
+                return HttpResponseRedirect('/')
+        
+            elif 'edit-expense' in request.POST:
+
+                return HttpResponseRedirect('/')
+
+            else:
+                expense = Expense.objects.get(id=request.POST.get("delete-expense"))
+                expense.delete()
+                
+                return HttpResponseRedirect('/') 
 
     context = {
         "form": form,

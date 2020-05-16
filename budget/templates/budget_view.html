@@ -7,19 +7,19 @@
         <table class="table" id="expenseTable">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">Expenses</th>
-                <th scope="col">Amount</th>
+                <th class="col-md-2">Expenses</th>
+                <th class="col-md-2">Amount</th>
               </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ form.name }}</td>
-                    <td>
+                    <td class="col-md-2">{{ form.name }}</td>
+                    <td class="col-md-2">
                         <div style="float: left;">
                             {{ form.amount }}
                         </div>
                         <div style="float: right;">
-                            <button type="submit" class="btn btn-link">
+                            <button type="submit" class="btn btn-link" name="create-expense">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
                         </div>
@@ -27,36 +27,36 @@
                 </tr>
             </tbody>
         </table>
+        <table class="table">
+            <tbody>
+                {% for expense in expenses %}
+                <tr>
+                    <td class="col-md-2">{{ expense.name }}</td>
+                    <td class="col-md-2">
+                        <div style="float: left;">
+                            ${{ expense.amount }}
+                        </div>
+                        <div style="float: right;">
+                            <button type="submit" class="btn btn-link" name="edit-expense" value={{expense.id}}>
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </div>
+                        <div style="float: right;">
+                            <button type="submit" class="btn btn-link" name="delete-expense" value={{expense.id}}>
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </form>
-    <table class="table">
-        <tbody>
-            {% for expense in expenses %}
-            <tr>
-                <td>{{ expense.name }}</td>
-                <td>
-                    <div style="float: left;">
-                        ${{ expense.amount }}
-                    </div>
-                    <div style="float: right;">
-                        <button type="submit" class="btn btn-link">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </button>
-                    </div>
-                    <div style="float: right;">
-                        <button type="submit" class="btn btn-link">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
     <table class="table">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">Total</th>
-                <th scope="col">${{ total | floatformat:2 }}</th>
+                <th class="col-md-2">Total</th>
+                <th class="col-md-2">${{ total | floatformat:2 }}</th>
             </tr>
         </thead>
     </table>
