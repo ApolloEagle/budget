@@ -1,21 +1,45 @@
 from django.shortcuts import render
-from budget.models import Expense
-from .forms import ExpenseForm
+from budget.models import Expense, Income
+from .forms import ExpenseForm, IncomeForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Sum
 
 def budget_view(request):
     expenses = Expense.objects.all()
-    total = Expense.objects.aggregate(total=Sum('amount'))['total']
+    incomes = Income.objects.all()
+    incTotal = Income.objects.aggregate(total=Sum('income'))['total']
+    expTotal = Expense.objects.aggregate(total=Sum('amount'))['total']
 
-    form = ExpenseForm()
+    expForm = ExpenseForm()
+    incForm = IncomeForm()
     if request.method == 'POST':
-        form = ExpenseForm(request.POST)
-        if form.is_valid():
+        expForm = ExpenseForm(request.POST)
+        incForm = IncomeForm(request.POST)
+        if incForm.is_valid():
+            if 'create-expense' in request.POST:
+                income = Income(
+                    income=incForm.cleaned_data["income"],
+                )
+
+                income.save()
+
+                return HttpResponseRedirect('/')
+        
+            elif 'edit-income' in request.POST:
+
+                return HttpResponseRedirect('/')
+
+            else:
+                income = Income.objects.get(id=request.POST.get("delete-income"))
+                income.delete()
+                
+                return HttpResponseRedirect('/') 
+
+        if expForm.is_valid():
             if 'create-expense' in request.POST:
                 expense = Expense(
-                    name=form.cleaned_data["name"],
-                    amount=form.cleaned_data["amount"]
+                    name=expForm.cleaned_data["name"],
+                    amount=expForm.cleaned_data["amount"]
                 )
 
                 expense.save()
@@ -33,9 +57,12 @@ def budget_view(request):
                 return HttpResponseRedirect('/') 
 
     context = {
-        "form": form,
+        "incForm": incForm,
+        "expForm": expForm,
+        "incomes": incomes,
         "expenses": expenses,
-        "total": total,
+        "incTotal": incTotal,
+        "expTotal": expTotal,
     }
     
     return render(request, "budget_view.html", context)
