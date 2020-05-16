@@ -16,3 +16,13 @@ class ExpenseForm(forms.Form):
             "placeholder": "$400.00"
         })
     )
+
+class IncomeForm(forms.Form):
+    income = forms.DecimalField(
+        max_digits=16,
+        decimal_places=2,
+        widget=forms.NumberInput(attrs={
+            "class": "form-control",
+            "placeholder": "$1000.00"
+        })
+    )
