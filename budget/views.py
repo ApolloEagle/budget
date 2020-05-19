@@ -4,6 +4,8 @@ from .forms import ExpenseForm, IncomeForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Sum
 
+# Check email
+
 def budget_view(request):
     expenses = Expense.objects.all()
     incomes = Income.objects.all()
